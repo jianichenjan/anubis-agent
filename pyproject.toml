@@ -11,3 +11,4 @@ requires-python = ">=3.10"
 [project.scripts]
 anubis-gate = "anubis.gate:main"
 anubis-summon = "anubis.summon:main"
+anubis-review = "anubis.entrypoint:main"

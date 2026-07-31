@@ -12,6 +12,55 @@ inherit the proposing agent's preferred conclusion. It receives a bounded
 evidence packet, returns one closed verdict, and lets a deterministic gate
 enforce the result.
 
+## Selective by design
+
+Anubis is deliberately not present in every interaction. Constant review would
+add theater and latency without improving low-consequence work. The summons
+policy is explicit: local explanation and isolated tests can remain advisory;
+deployments, migrations, permission changes, tenant-boundary changes, public
+claims, external messages, destructive actions, and durable memory cross the
+gate in a compliant integration.
+
+Selection inside the library is mechanical. The action, risk signals, blast
+radius, external exposure, and reversibility declared in the packet determine
+whether review is mandatory. Anubis does not independently discover omitted or
+misclassified consequences; a trustworthy integration must construct that
+packet from authoritative state and stop the action while review is pending.
+
+## Governance you can inspect
+
+The public repository exposes the parts an operator should be able to verify:
+
+| Published | Deliberately withheld |
+|---|---|
+| summons triggers and risk signals | credentials and tokens |
+| evidence and verdict schemas | raw private evidence |
+| closed verdict vocabulary | private conversations and persuasive reasoning |
+| deterministic allow/block conditions | hidden authority or silent overrides |
+| privacy-preserving ledger format | unrelated operator memory |
+| tests for passage and refusal | claims of universal jailbreak resistance |
+
+This is transparency about the decision boundary, not indiscriminate disclosure.
+The ledger records a packet fingerprint, verdict metadata, and hashed reason
+codes. It does not become a second archive of the material it governs.
+
+## Two independent controls
+
+```text
+clean evidence packet → independent judgment → structured verdict
+                                             ↓
+proposed consequence ← deterministic allow/block gate ← verdict + packet
+```
+
+The reviewer contract grants no execution authority. The enforcement gate cannot
+invent a better verdict. Only `SUPPORTED` passes when the gate is invoked, and it
+still cannot create authority the caller did not already possess.
+
+That separation is the point. Governance should not depend on trusting the same
+agent to propose, review, approve, and execute its own action. This library
+enforces the packet/verdict boundary; the surrounding system remains responsible
+for intercepting the real consequence and honoring the exit result.
+
 ## What it governs
 
 Use Anubis before actions such as production deployments, database migrations,
@@ -35,19 +84,47 @@ resistance. Adversarial testing should continue with bounded fixtures, nearby
 benign controls, and independently reviewed changes to Anubis's own contract or
 gate.
 
+## What Anubis does not solve
+
+- It does not authenticate the human holding an already authenticated device.
+- It does not make weak or stale evidence true.
+- It does not replace tenant isolation, least privilege, or server-side access
+  control.
+- It does not guarantee that every harmful prompt or trajectory will be detected.
+- It does not authorize itself to change its own governing contract or gate.
+
+Those limits are part of the interface. A governance layer becomes less
+trustworthy when its failure boundaries are hidden behind stronger language.
+
 ## Summon Anubis
+
+Use the fail-closed entry point for integrations. Mandatory packets without a
+verdict emit a clean review request and exit `3`; callers must stop the proposed
+action, obtain a verdict, then invoke the same command again with `--verdict`:
+
+```sh
+python3 -m anubis.entrypoint --packet examples/packet.json > review-request.txt
+python3 -m anubis.entrypoint --packet examples/packet.json \
+  --verdict examples/verdict.json \
+  --ledger ledger.jsonl
+```
+
+Exit code `0` permits passage, `2` blocks passage, `3` requires independent
+review, and `1` means the packet or verdict is invalid. This is the recommended
+single local orchestration surface. A compliant caller treats exit `3` as a hard
+stop and does not mistake the emitted summons request for approval.
 
 Generate a clean, provider-neutral review request from a validated packet:
 
 ```sh
-anubis-summon --packet examples/packet.json > review-request.txt
+python3 -m anubis.summon --packet examples/packet.json > review-request.txt
 ```
 
 Send that request to the model or agent runtime you trust for independent
 review. Save the returned JSON verdict, then enforce it mechanically:
 
 ```sh
-anubis-gate \
+python3 -m anubis.gate \
   --packet examples/packet.json \
   --verdict examples/verdict.json \
   --ledger ledger.jsonl
@@ -92,7 +169,6 @@ python3 -m unittest discover -s tests -v
 ```
 
 The agent runtime is deliberately provider-neutral: no model SDK, credentials,
-or hidden prompt is bundled. `AGENTS.md` also makes the repository itself a
-native summons surface in compatible coding-agent environments.
+or hidden prompt is bundled.
 
 Licensed under the MIT License.
