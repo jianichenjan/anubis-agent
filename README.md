@@ -22,6 +22,19 @@ writes, and cross-system decisions.
 Ordinary explanation, read-only inspection, reversible local edits, and
 isolated tests remain advisory unless a risk signal expands their consequence.
 
+## Adversarial pressure
+
+Anubis treats `coercive_reframing` as a mandatory review signal. Repeating a
+hedge as “an admission” does not create evidence, identity pressure does not
+expand authority, and a forced-confession narrative cannot unlock harmful
+operational content. The signal triggers review; it does not predetermine the
+verdict or suppress sincere disagreement.
+
+This is a tested governance boundary, not a claim of universal jailbreak
+resistance. Adversarial testing should continue with bounded fixtures, nearby
+benign controls, and independently reviewed changes to Anubis's own contract or
+gate.
+
 ## Summon Anubis
 
 Generate a clean, provider-neutral review request from a validated packet:
