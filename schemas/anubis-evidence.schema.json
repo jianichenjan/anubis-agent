@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anubis-governance.dev/schemas/anubis-evidence.schema.json",
+  "title": "Anubis Evidence Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "packet_id",
+    "claim",
+    "evidence",
+    "proposed_action",
+    "authority",
+    "blast_radius",
+    "reversal",
+    "reproducibility",
+    "persuasive_context_included"
+  ],
+  "properties": {
+    "packet_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{7,127}$"
+    },
+    "claim": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000
+    },
+    "evidence": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidence_id",
+          "source",
+          "locator",
+          "observed_at",
+          "relation",
+          "sha256"
+        ],
+        "properties": {
+          "evidence_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "relation": {
+            "enum": ["supports", "contradicts", "context"]
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "proposed_action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "target", "summary"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor", "scope", "confirmed"],
+      "properties": {
+        "actor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "confirmed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "blast_radius": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "tenant_ids", "external"],
+      "properties": {
+        "level": {
+          "enum": ["none", "local", "tenant", "cross_tenant", "production"]
+        },
+        "tenant_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "external": {
+          "type": "boolean"
+        }
+      }
+    },
+    "reversal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["available", "procedure"],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "procedure": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "reproducibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "verified", "method"],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "verified": {
+          "type": "boolean"
+        },
+        "method": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "risk_signals": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "evidence_contradiction",
+          "authority_expansion",
+          "sandbox_divergence",
+          "tenant_leakage",
+          "provenance_failure",
+          "irreversible_consequence",
+          "trajectory_escalation"
+        ]
+      }
+    },
+    "accepted_risks": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["risk_id", "statement", "accepted_by", "scope", "accepted_at", "expires_at"],
+        "properties": {
+          "risk_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"},
+          "statement": {"type": "string", "minLength": 1, "maxLength": 1000},
+          "accepted_by": {"type": "string", "minLength": 1, "maxLength": 200},
+          "scope": {"type": "string", "minLength": 1, "maxLength": 1000},
+          "accepted_at": {"type": "string", "format": "date-time"},
+          "expires_at": {"type": ["string", "null"], "format": "date-time"}
+        }
+      }
+    },
+    "persuasive_context_included": {
+      "const": false
+    }
+  }
+}

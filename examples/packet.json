@@ -1,0 +1,41 @@
+{
+  "packet_id": "deploy-example-0001",
+  "claim": "The reviewed release preserves tenant isolation.",
+  "evidence": [
+    {
+      "evidence_id": "tenant-test",
+      "source": "deterministic integration test",
+      "locator": "tests/test_tenant_isolation.py::test_cross_tenant_denied",
+      "observed_at": "2026-07-31T12:00:00+00:00",
+      "relation": "supports",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "proposed_action": {
+    "kind": "production_deploy",
+    "target": "service/example",
+    "summary": "Deploy the reviewed release to production."
+  },
+  "authority": {
+    "actor": "release owner",
+    "scope": "deploy service/example",
+    "confirmed": true
+  },
+  "blast_radius": {
+    "level": "production",
+    "tenant_ids": [],
+    "external": true
+  },
+  "reversal": {
+    "available": true,
+    "procedure": "Restore the previously fingerprinted release."
+  },
+  "reproducibility": {
+    "required": true,
+    "verified": true,
+    "method": "Run the pinned tenant-isolation integration test suite."
+  },
+  "risk_signals": [],
+  "accepted_risks": [],
+  "persuasive_context_included": false
+}

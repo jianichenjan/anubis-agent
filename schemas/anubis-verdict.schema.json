@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anubis-governance.dev/schemas/anubis-verdict.schema.json",
+  "title": "Anubis Verdict",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "packet_id",
+    "reviewer",
+    "verdict",
+    "evidence_ids",
+    "findings",
+    "missing_evidence",
+    "reproducible",
+    "conditions"
+  ],
+  "properties": {
+    "packet_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{7,127}$"
+    },
+    "reviewer": {
+      "const": "anubis"
+    },
+    "verdict": {
+      "enum": [
+        "SUPPORTED",
+        "CONTRADICTED",
+        "INSUFFICIENT_EVIDENCE",
+        "UNAUTHORIZED",
+        "NON_REPRODUCIBLE"
+      ]
+    },
+    "evidence_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+      }
+    },
+    "findings": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1000
+      }
+    },
+    "missing_evidence": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1000
+      }
+    },
+    "reproducible": {
+      "type": "boolean"
+    },
+    "conditions": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1000
+      }
+    }
+  }
+}

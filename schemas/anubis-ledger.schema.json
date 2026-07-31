@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anubis-governance.dev/schemas/anubis-ledger.schema.json",
+  "title": "Anubis Ledger Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "recorded_at",
+    "packet_id",
+    "packet_fingerprint",
+    "summoned",
+    "gate_mode",
+    "allowed",
+    "verdict",
+    "reason_codes"
+  ],
+  "properties": {
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "packet_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{7,127}$"
+    },
+    "packet_fingerprint": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "summoned": {
+      "type": "boolean"
+    },
+    "gate_mode": {
+      "enum": ["advisory", "mandatory"]
+    },
+    "allowed": {
+      "type": "boolean"
+    },
+    "verdict": {
+      "enum": [
+        "SUPPORTED",
+        "CONTRADICTED",
+        "INSUFFICIENT_EVIDENCE",
+        "UNAUTHORIZED",
+        "NON_REPRODUCIBLE"
+      ]
+    },
+    "reason_codes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{16}$"
+      }
+    }
+  }
+}

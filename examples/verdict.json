@@ -1,0 +1,10 @@
+{
+  "packet_id": "deploy-example-0001",
+  "reviewer": "anubis",
+  "verdict": "SUPPORTED",
+  "evidence_ids": ["tenant-test"],
+  "findings": ["The cited deterministic test supports the isolation claim."],
+  "missing_evidence": [],
+  "reproducible": true,
+  "conditions": []
+}
