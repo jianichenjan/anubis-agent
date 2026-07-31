@@ -27,6 +27,7 @@ from anubis.summon import (  # noqa: E402
     build_review_request,
     sanitize_review_packet,
 )
+from anubis.integration import AnubisBlocked, enforce, review_action  # noqa: E402
 
 
 def packet(action_kind: str = "memory_write") -> dict:
@@ -351,6 +352,46 @@ class SummonAgentTests(unittest.TestCase):
         )[0]
         decoded = json.loads(base64.b64decode(payload))
         self.assertEqual(decoded["claim"], injection)
+
+
+class IntegrationTests(unittest.TestCase):
+    def test_mandatory_hook_reviews_then_enforces(self) -> None:
+        calls = []
+
+        def reviewer(request: str) -> dict:
+            calls.append(request)
+            return verdict()
+
+        result = review_action(packet(), reviewer)
+        self.assertTrue(result["allowed"])
+        self.assertEqual(result["verdict"], "SUPPORTED")
+        self.assertEqual(len(calls), 1)
+        enforce(result)
+
+    def test_blocked_hook_stops_before_action(self) -> None:
+        result = review_action(packet(), lambda _: verdict("UNAUTHORIZED"))
+        self.assertFalse(result["allowed"])
+        with self.assertRaises(AnubisBlocked):
+            enforce(result)
+
+    def test_advisory_hook_does_not_call_reviewer(self) -> None:
+        candidate = packet("read_only")
+        candidate["reproducibility"] = {
+            "required": False,
+            "verified": False,
+            "method": "",
+        }
+        called = False
+
+        def reviewer(_: str) -> dict:
+            nonlocal called
+            called = True
+            return verdict()
+
+        result = review_action(candidate, reviewer)
+        self.assertTrue(result["allowed"])
+        self.assertEqual(result["gate_mode"], "advisory")
+        self.assertFalse(called)
 
 
 class EntrypointTests(unittest.TestCase):

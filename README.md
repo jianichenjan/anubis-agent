@@ -132,6 +132,31 @@ python3 -m anubis.gate \
 
 The agent judges. The gate enforces. Neither can silently replace the other.
 
+## Add Anubis to an agent hook
+
+For a Python agent, the integration boundary is one callback: your provider
+adapter receives Anubis's review request and returns the structured verdict.
+The helper never executes the proposed action; your code calls `enforce` only
+after the result has been returned.
+
+```python
+from anubis.integration import enforce, review_action
+
+def ask_reviewer(review_request: str) -> dict:
+    # Send review_request to your approved model or review service.
+    return provider.complete_json(review_request)
+
+result = review_action(packet, ask_reviewer, ledger="var/anubis.jsonl")
+enforce(result)
+perform_the_action()
+```
+
+Mandatory packets stop at the review callback. A blocked or invalid verdict
+raises before `perform_the_action()` is reached; advisory packets return an
+explicit allowed result for low-consequence work. For non-Python runtimes,
+use the CLI entrypoint or mirror the same three-stage contract: propose,
+review, then enforce.
+
 ## How it works
 
 1. Build an evidence packet from `schemas/anubis-evidence.schema.json`.
