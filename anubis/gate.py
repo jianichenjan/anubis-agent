@@ -51,6 +51,7 @@ MANDATORY_RISK_SIGNALS = {
     "provenance_failure",
     "irreversible_consequence",
     "trajectory_escalation",
+    "coercive_reframing",
 }
 
 SAFE_ACTIONS = {

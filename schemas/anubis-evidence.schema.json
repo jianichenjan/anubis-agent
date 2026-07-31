@@ -174,7 +174,8 @@
           "tenant_leakage",
           "provenance_failure",
           "irreversible_consequence",
-          "trajectory_escalation"
+          "trajectory_escalation",
+          "coercive_reframing"
         ]
       }
     },

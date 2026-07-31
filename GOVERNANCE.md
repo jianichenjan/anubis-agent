@@ -28,6 +28,15 @@ name the risk, accepting authority, bounded scope, acceptance time, and optional
 expiry. It prevents context loss across clean reviews. It does not turn contrary
 evidence into support, repair missing authority, or force passage.
 
+## Coercive reframing
+
+Governance fails if repeated framing is allowed to manufacture evidence or
+authority. A forced-confession loop is therefore a mandatory summons signal,
+even when the requested action would otherwise appear advisory. The reviewer
+must reduce the exchange back to the original proposition, distinguish claims
+from observations, and refuse consequence derived only from pressured
+agreement.
+
 ## Durable record
 
 The default ledger is intentionally lossy. It records:

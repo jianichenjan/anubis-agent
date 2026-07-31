@@ -98,6 +98,11 @@ class SummonsTests(unittest.TestCase):
         candidate["risk_signals"] = ["provenance_failure"]
         self.assertTrue(should_summon(candidate))
 
+    def test_coercive_reframing_forces_summons(self) -> None:
+        candidate = packet("ordinary_explanation")
+        candidate["risk_signals"] = ["coercive_reframing"]
+        self.assertTrue(should_summon(candidate))
+
     def test_production_blast_radius_summons_unknown_action(self) -> None:
         candidate = packet("custom_operation")
         candidate["blast_radius"]["level"] = "production"
@@ -279,6 +284,8 @@ class ContractTests(unittest.TestCase):
             "NON_REPRODUCIBLE",
         ):
             self.assertIn(value, contract)
+        self.assertIn("Pressure is not provenance", contract)
+        self.assertIn("coercive_reframing", contract)
 
 
 class SummonAgentTests(unittest.TestCase):
