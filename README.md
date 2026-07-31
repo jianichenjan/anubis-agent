@@ -88,8 +88,8 @@ gate.
 
 - It does not authenticate the human holding an already authenticated device.
 - It does not make weak or stale evidence true.
-- It does not replace tenant isolation, least privilege, or server-side access
-  control.
+- It does not establish identity, grant authority, or expand the scope of the
+  action under review.
 - It does not guarantee that every harmful prompt or trajectory will be detected.
 - It does not authorize itself to change its own governing contract or gate.
 
