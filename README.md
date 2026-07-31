@@ -1,6 +1,6 @@
 # Anubis Agent
 
-![Anubis balances evidence against consequence](assets/anubis-scale.png)
+![Anubis balances evidence against consequence](assets/anubis-scale-cadentis-counterweight-3d-v1.png)
 
 Anubis is a summonable governance agent for consequential actions. Each review
 starts from a clean packet; optional governance memory stays in an
