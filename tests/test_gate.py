@@ -28,6 +28,7 @@ from anubis.summon import (  # noqa: E402
     sanitize_review_packet,
 )
 from anubis.integration import AnubisBlocked, enforce, review_action  # noqa: E402
+from anubis.grading import append_grade, grade_result  # noqa: E402
 
 
 def packet(action_kind: str = "memory_write") -> dict:
@@ -392,6 +393,27 @@ class IntegrationTests(unittest.TestCase):
         self.assertTrue(result["allowed"])
         self.assertEqual(result["gate_mode"], "advisory")
         self.assertFalse(called)
+
+    def test_post_action_grade_stores_only_bounded_metadata(self) -> None:
+        result = review_action(packet(), lambda _: verdict())
+        grade = grade_result(
+            result,
+            assessment="UPHELD",
+            assessor="operator",
+            note="The action matched the approved scope.",
+        )
+        self.assertEqual(grade["assessment"], "UPHELD")
+        self.assertEqual(len(grade["note_code"]), 16)
+        with tempfile.TemporaryDirectory() as temp:
+            path = pathlib.Path(temp) / "grades.jsonl"
+            append_grade(path, grade)
+            raw = path.read_text()
+        self.assertNotIn("approved scope", raw)
+
+    def test_post_action_grade_requires_explicit_assessment(self) -> None:
+        result = review_action(packet(), lambda _: verdict())
+        with self.assertRaises(GateValidationError):
+            grade_result(result, assessment="AUTO_DECIDED")
 
 
 class EntrypointTests(unittest.TestCase):

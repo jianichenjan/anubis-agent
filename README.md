@@ -159,6 +159,30 @@ explicit allowed result for low-consequence work. For non-Python runtimes,
 use the CLI entrypoint or mirror the same three-stage contract: propose,
 review, then enforce.
 
+## Grade the decision afterward
+
+Learning happens after the action, not by collecting every prompt. The host
+system can record an explicit bounded assessment of the result:
+
+```python
+from pathlib import Path
+
+from anubis.grading import append_grade, grade_result
+
+grade = grade_result(
+    result,
+    assessment="UPHELD",  # UPHELD, OVERTURNED, or INCONCLUSIVE
+    assessor="operator",
+    note="The action matched the approved scope.",
+)
+append_grade(Path("var/anubis-grades.jsonl"), grade)
+```
+
+The grade stores the packet fingerprint, verdict, assessment, assessor, and a
+hash of any note—not the packet, conversation, or raw outcome. Grading is
+explicit rather than inferred: an outcome alone does not prove that a verdict
+was correct.
+
 ## How it works
 
 1. Build an evidence packet from `schemas/anubis-evidence.schema.json`.
