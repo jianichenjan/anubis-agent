@@ -1,0 +1,9 @@
+{
+  "packet_id": "anubis-example-0001",
+  "packet_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "summoned": true,
+  "gate_mode": "mandatory",
+  "allowed": true,
+  "verdict": "SUPPORTED",
+  "reasons": []
+}

@@ -1,0 +1,9 @@
+{
+  "recorded_at": "2026-08-01T12:00:00+00:00",
+  "packet_id": "anubis-example-0001",
+  "packet_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "verdict": "SUPPORTED",
+  "assessment": "UPHELD",
+  "assessor": "operator",
+  "note_code": "0123456789abcdef"
+}
