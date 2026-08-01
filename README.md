@@ -2,6 +2,8 @@
 
 ![Anubis balances evidence against consequence](assets/anubis-scale-cadentis-counterweight-3d-v1.png)
 
+> **Anubis weighs the evidence. Cadentis supplies the context.**
+
 Anubis is a summonable governance agent for consequential actions. Each review
 starts from a clean packet; optional governance memory stays in an
 operator-controlled private store, outside the public agent repository.
