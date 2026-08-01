@@ -1,4 +1,4 @@
-# Anubis Agent
+# Anubis Agent × Cadentis
 
 ![Anubis balances evidence against consequence](assets/anubis-scale-cadentis-counterweight-3d-v1.png)
 
